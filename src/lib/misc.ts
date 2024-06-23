@@ -3,6 +3,7 @@
 export interface FinalResult {
     user: string,
     success: boolean,
+    error: string,
     achievements: GameAchievements,
 }
 

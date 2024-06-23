@@ -24,6 +24,7 @@ interface SteamApiPlayerAchievementsResponse {
         gameName: string,
         achievements: SteamApiPlayerAchievement[],
         success: boolean,
+        error: string,
     },
 }
 
@@ -67,26 +68,37 @@ interface SteamApiGetSchemaStats {
 }
 
 export async function getUserFromName(user: string): Promise<getUserFromNameResult> {
-    logger.info(`getUserFromName: fetching steamid for steam user ${user}.`);
     let resp: getUserFromNameResult = {
         response: undefined,
         error: undefined,
     };
 
-    await fetch(`${STEAM_API_URL}/ISteamUser/ResolvevanityURL/v0001/?vanityurl=${user}&key=${STEAM_API_KEY}`)
-        .then((res) => res.json())
-        .then((res: SteamVanityUrlApiResponse) => {
-            if (!res.response?.success) {
-                resp.error = "Unable to fetch your profile. Is it public? If it is... uh, bother me about it."
-            }
-            resp.response = res.response;
+    if (parseInt(user)) {
+        logger.info(`getUserFromName: user is only made up of numbers, likely an ID. Skipping getUserFromName.`);
+        resp.response = {
+            steamid: user,
+            success: true,
+        }
+    } else {
+        logger.info(`getUserFromName: fetching steamid for steam user ${user}.`);
+        await fetch(`${STEAM_API_URL}/ISteamUser/ResolvevanityURL/v0001/?vanityurl=${user}&key=${STEAM_API_KEY}`)
+            .then(async (res) => {
+                const json = await res.json();
 
-        })
-        .catch((e) => {
-            logger.error(`getUserFromName: fetch has thrown: ${e}`);
-            resp.error = "Something went wrong. Try again in a bit and if the issue persists let Aravix know.";
+                if (json.response?.message === "No match") {
+                    resp.error = "NO_MATCH"
+                }
 
-        });
+                if (json.response?.steamid) {
+                    resp.response = json.response;
+                }
+            })
+            .catch((e) => {
+                logger.error(`getUserFromName: fetch has thrown: ${e}`);
+                resp.error = "Something went wrong. Try again in a bit and if the issue persists let Aravix know.";
+
+            });
+    }
     return resp;
 }
 
@@ -101,6 +113,12 @@ export async function getPlayerAchievements(appId: string, userId: string): Prom
         .then(res => res.json())
         .then((res: SteamApiPlayerAchievementsResponse) => {
             response.playerstats = res.playerstats;
+
+            if (res.playerstats?.error) {
+                if (res.playerstats.error === "Profile is not public") {
+                    response.error = "PRIVATE_PROFILE";
+                }
+            }
         })
         .catch((e) => {
             logger.error(`getPlayerAchievements: fetch has thrown: ${e}`);

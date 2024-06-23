@@ -17,11 +17,13 @@ export interface AssembledAchievement {
 interface GameResult {
     achievements?: AssembledAchievement[],
     success: boolean,
+    error: string,
 }
 
 interface FinalResult {
     user: string,
     success: boolean,
+    error: string,
     achievements: GameAchievements,
 }
 
@@ -42,15 +44,17 @@ export async function steamAchievementNonsense(user: string) {
     let result: FinalResult = {
         user,
         success: true,
+        error: "",
         achievements: {} as GameAchievements
     };
 
     if (!userId.error) {
         const khRemixResult = await doAchievementNonsenseForGame(KINGDOM_HEARTS_REMIX_APPID, userId.response?.steamid!);
-        const finalChapterResult = await doAchievementNonsenseForGame(KINGDOM_HEARTS_FINAL_CHAPTER_APPID, userId.response?.steamid!);
-        const kh3Result = await doAchievementNonsenseForGame(KINGDOM_HEARTS_3_APPID, userId.response?.steamid!);
 
-        if (khRemixResult.success && finalChapterResult.success && kh3Result.success) {
+        if (khRemixResult.success) {
+            const finalChapterResult = await doAchievementNonsenseForGame(KINGDOM_HEARTS_FINAL_CHAPTER_APPID, userId.response?.steamid!);
+            const kh3Result = await doAchievementNonsenseForGame(KINGDOM_HEARTS_3_APPID, userId.response?.steamid!);
+
             result.achievements.kh1 = getAchievementsForGame(khRemixResult, 55);
             result.achievements.reCoM = getAchievementsForGame(khRemixResult, 102, 56);
             result.achievements.kh2 = getAchievementsForGame(khRemixResult, 152, 103);
@@ -63,10 +67,12 @@ export async function steamAchievementNonsense(user: string) {
             result.achievements.remind = getAchievementsForGame(kh3Result, 51, 46);
         } else {
             result.success = false;
+            result.error = khRemixResult.error;
         }
 
     } else {
         result.success = false;
+        result.error = userId.error;
     }
 
     return result;
@@ -78,11 +84,18 @@ async function doAchievementNonsenseForGame(appId: string, userId: string) {
 
     let result: GameResult = {
         success: true,
+        error: "",
     }
 
     // TODO: Proper error handling at some point maybe perhaps
-    if (playerAchievements.error || gameAchievements.error) {
+    if (playerAchievements.error) {
         result.success = false;
+        result.error = playerAchievements.error;
+    }
+
+    if (gameAchievements.error) {
+        result.success = false;
+        result.error = gameAchievements.error;
     }
 
     let assembled: AssembledAchievement[] = [];

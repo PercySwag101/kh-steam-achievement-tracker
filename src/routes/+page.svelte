@@ -97,6 +97,23 @@
           </dl>
         </svelte:fragment>
       </TabGroup>
+    {:else if form.error === "NO_MATCH"}
+      <div
+        class="info-thing p-2 flex flex-col justify-center items-center text-center"
+      >
+        <p>
+          We were unable to find a profile with that user name. Please double
+          check and try again.<br />
+          Keep in mind that it's not your display name, but Steam name you need to
+          input.
+        </p>
+      </div>
+    {:else if form.error === "PRIVATE_PROFILE"}
+      <div
+        class="info-thing p-2 flex flex-col justify-center items-center text-center"
+      >
+        <p>The profile we found was private.</p>
+      </div>
     {:else}
       <aside class="alert variant-ghost-error w-1/2">
         <!-- Icon -->
@@ -106,9 +123,9 @@
           <h3 class="h3">Uh oh...</h3>
           <p>
             Something seems to have gone wrong...<br /> Make sure you put in the
-            correct Steam name (the one shown in the URL, not your display name),
-            and that your profile is public. If both of these are correct, let Aravix
-            know.
+            correct Steam name (the one shown in the URL of your profile, not your
+            display name), and that your profile is public. If both of these are
+            correct, let Aravix know.
           </p>
         </div>
       </aside>
@@ -116,7 +133,9 @@
   {/if}
 </div>
 
-<div class="info-thing p-2 flex flex-col justify-center items-center text-center">
+<div
+  class="info-thing p-2 flex flex-col justify-center items-center text-center"
+>
   {#if allEmpty}
     <p>
       We found a profile, but it doesn't seem to have any Kingdom Hearts games.
