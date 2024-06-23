@@ -1,5 +1,7 @@
-import { STEAM_API_KEY } from "$env/static/private"
+import { env } from "$env/dynamic/private"
 import { logger } from "./logger";
+
+const STEAM_API_KEY = env.STEAM_API_KEY;
 
 export const STEAM_API_URL = "http://api.steampowered.com";
 export const STEAM_PLAYER_ACHIEVEMENTS_PATH = "ISteamUserStats/GetPlayerAchievements/v0001";
