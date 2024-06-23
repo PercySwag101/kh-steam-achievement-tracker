@@ -87,7 +87,6 @@ export async function getUserFromName(user: string): Promise<getUserFromNameResu
             resp.error = "Something went wrong. Try again in a bit and if the issue persists let Aravix know.";
 
         });
-    console.log(resp);
     return resp;
 }
 

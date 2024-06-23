@@ -48,8 +48,7 @@
       steamUserName.set(data.steamName);
     }
 
-    if (form.success) {
-      console.log(form);
+    if (form) {
       // Just a quick check to see if the user even has any KH games.
       if (
         form.achievements.bbs.length === 0 &&
