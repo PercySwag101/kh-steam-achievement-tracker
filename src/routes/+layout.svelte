@@ -18,6 +18,9 @@
   } from "@floating-ui/dom";
   import { storePopup } from "@skeletonlabs/skeleton";
   import PageHeader from "$lib/PageHeader.svelte";
+  import { AiFillGithub } from "svelte-icons-pack/ai"; 
+    import { Icon } from "svelte-icons-pack";
+
   storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
   initializeStores();
@@ -50,12 +53,12 @@
           aravixdev
         </a>
         <a
-          class="btn btn-sm variant-ghost-surface"
-          href="https://github.com/aravikusu"
+          class="btn-icon btn-icon-sm variant-ghost-surface"
+          href="https://github.com/aravikusu/kh-steam-achievement-tracker"
           target="_blank"
           rel="noreferrer"
         >
-          GitHub
+          <Icon src={AiFillGithub} size="24" />
         </a>
       </svelte:fragment>
     </AppBar>
