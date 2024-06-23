@@ -12,7 +12,7 @@
     <!-- / -->
     <div class="flex justify-center space-x-1">
       <p>
-        Put your Steam name in below, submit, and we'll list your deets all
+        Put your Steam ID in below, submit, and we'll list your deets all
         nice-like.<br />
         Not your Steam <i>display name</i>. It's the one shown in the URL when you visit your profile.<br /><br />
         Keep in mind that your profile has to be public for this to work.<br />
