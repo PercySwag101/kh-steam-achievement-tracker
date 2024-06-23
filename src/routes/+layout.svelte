@@ -23,6 +23,14 @@
   initializeStores();
 </script>
 
+<svelte:head>
+  <title>Kingdom Hearts Steam Achievement Tracker</title>
+  <meta
+    name="description"
+    content="A tracker for Kingdom Hearts achievements on Steam. Just input your Steam name and get nice organized-by-game lists of your achievements."
+  />
+</svelte:head>
+
 <!-- App Shell -->
 <Modal />
 <AppShell>
