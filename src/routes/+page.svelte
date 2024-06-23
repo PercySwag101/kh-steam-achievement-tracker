@@ -102,9 +102,9 @@
         class="info-thing p-2 flex flex-col justify-center items-center text-center"
       >
         <p>
-          We were unable to find a profile with that user name. Please double
+          We were unable to find a profile with that ID. Please double
           check and try again.<br />
-          Keep in mind that it's not your display name, but Steam name you need to
+          Keep in mind that it's not your display name, but Steam ID you need to
           input.
         </p>
       </div>
@@ -122,10 +122,7 @@
         <div class="alert-message">
           <h3 class="h3">Uh oh...</h3>
           <p>
-            Something seems to have gone wrong...<br /> Make sure you put in the
-            correct Steam name (the one shown in the URL of your profile, not your
-            display name), and that your profile is public. If both of these are
-            correct, let Aravix know.
+            Something seems to have gone wrong...<br /> Try again in a bit, and if the issue persists let Aravix know.
           </p>
         </div>
       </aside>
